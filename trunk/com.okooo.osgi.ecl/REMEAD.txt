@@ -1,0 +1,168 @@
+1. About ECL.
+
+ ECL is stand for Equinox Console Language. This is a simple script language for equinox console. You can use these commands to start/stop/update/restart bundle in batch mode. Commands can be stored in a script file, you can predefine a lot script file and load to run when necessary.
+
+2. How to install.
+
+  This bundle require ANTLR_3.0, you mush copy com.okooo.osgi.antlr_runtime-3.0.1.jar and com.okooo.osgi.ecl_1.0.0.jar into Equinox_Home/plugin. Then add the flowing text to Equinox_Home/configuration/config.ini:
+  com.okooo.osgi.ecl.script.dir=data/ecl/ 
+  This is directory to store all the script files, you mush create it, in Linux type following command:
+  $pwd
+  /home/jiangyb/eclipse_equinox_3.4.0
+  $mkdir -p data/ecl
+
+3. How to use ECL.
+
+  ECL add extra command to equinox console, after you success to start equinox container, type the ? command, and you can see the help message of ECL command:
+osgi> ?
+	bstart (bid(,bid)* | bid..bid)
+	bupdate (bid(,bid)* | bid..bid)
+	brestart (bid(,bid)* | bid..bid)
+	bstop (bid(,bid)* | bid..bid)
+	ecl scriptName
+
+4. ECL example.
+For example, we have a lot of bundle installed in equinox container:
+osgi> ss
+
+Framework is launched.
+
+id      State       Bundle
+0       ACTIVE      org.eclipse.osgi_3.4.0.200803241110
+1       ACTIVE      org.eclipse.equinox.common_3.4.0.v20080421-2006
+2       ACTIVE      org.eclipse.update.configurator_3.2.200.v20080417
+3       ACTIVE      org.springframework.bundle.spring.context_2.5.2
+4       ACTIVE      org.springframework.bundle.spring.aop_2.5.2
+5       ACTIVE      com.springsource.javax.xml.stream_1.0.1
+6       ACTIVE      slf4j.log4j12_1.4.3
+7       ACTIVE      com.okooo.osgi.ss_1.0.0
+8       ACTIVE      com.springsource.javax.activation_1.1.0
+9       ACTIVE      mysql-connector-java-5.0.7-bin_0.0.0
+10      ACTIVE      antlr-runtime-3.0.1_0.0.0
+11      ACTIVE      org.springframework.osgi.backport-util-concurrent.osgi_3.1.0.SNAPSHOT
+12      ACTIVE      com.springsource.org.apache.commons.pool_1.3.0
+13      ACTIVE      smack_0.0.0
+14      ACTIVE      org.springframework.bundle.osgi.extensions.annotations_1.0.2
+15      ACTIVE      activemq-core-4.1.1_0.0.0
+16      ACTIVE      com.springsource.org.jaxen_1.1.1
+17      ACTIVE      org.springframework.bundle.spring.context.support_2.5.2
+18      ACTIVE      geronimo-jms_1.1_spec-1.0_0.0.0
+19      ACTIVE      org.springframework.bundle.osgi.io_1.0.2
+20      ACTIVE      c3p0-0.9.1.1_0.0.0
+21      ACTIVE      org.eclipse.equinox.ds_1.0.0.v20060601a
+22      ACTIVE      com.springsource.org.apache.commons.dbcp_1.2.2.osgi
+23      ACTIVE      org.springframework.osgi.asm.osgi_2.2.3.SNAPSHOT
+24      ACTIVE      geronimo-j2ee-management_1.0_spec-1.0_0.0.0
+25      ACTIVE      org.springframework.osgi.cglib-nodep.osgi_2.1.3.SNAPSHOT
+26      ACTIVE      org.springframework.bundle.spring.beans_2.5.2
+27      ACTIVE      com.springsource.org.apache.commons.lang_2.1.0
+28      ACTIVE      spring-orm_2.5.2
+29      ACTIVE      com.springsource.org.apache.commons.logging_1.1.1
+30      ACTIVE      org.eclipse.osgi.services_3.1.200.v20070605
+31      ACTIVE      slf4j.api_1.4.3
+32      ACTIVE      spring-tx_2.5.2
+33      ACTIVE      com.springsource.org.apache.commons.codec_1.3.0
+34      ACTIVE      org.springframework.bundle.osgi.core_1.0.2
+35      ACTIVE      org.springframework.osgi.aopalliance.osgi_1.0.0.SNAPSHOT
+36      ACTIVE      com.springsource.net.sf.cglib_2.1.3
+37      ACTIVE      com.springsource.org.apache.commons.httpclient_3.1.0
+38      ACTIVE      spring-jms_2.5.2
+39      ACTIVE      spring-jdbc_2.5.2
+40      ACTIVE      commons-dbcp_0.0.0
+41      ACTIVE      com.okooo.osgi.ecl_1.0.0
+42      ACTIVE      org.springframework.bundle.spring.core_2.5.2
+43      RESOLVED    com.okooo.osgi.logging.config_1.0.0
+                    Master=45
+44      ACTIVE      com.springsource.org.apache.commons.collections_3.2.0
+45      ACTIVE      org.springframework.osgi.log4j.osgi_1.2.15.SNAPSHOT
+46      ACTIVE      com.springsource.javax.mail_1.4.0
+47      ACTIVE      com.springsource.org.apache.commons.digester_1.8.0
+48      ACTIVE      com.springsource.org.apache.commons.beanutils_1.7.0
+49      ACTIVE      ibatis-sqlmap-2.3.0_0.0.0
+50      ACTIVE      org.springframework.osgi.junit.osgi_3.8.2.SNAPSHOT
+51      ACTIVE      jcl104.over.slf4j_1.4.3
+52      ACTIVE      org.springframework.bundle.osgi.extender_1.0.2
+53      ACTIVE      com.okooo.zeroc.ice_3.2.1
+54      ACTIVE      com.springsource.org.dom4j_1.6.1
+
+(1) to batch stop bundle which id are 2,3,4, you can type command:
+  bstop 2,3,4
+or you can type command:
+  bstop 2..4
+(2) to batch start bundle which id are 2,3,4, you can type command:
+  bstart 2,3,4
+or you can type command:
+  bstart 2..4
+(3) to batch update bundle which id are 2,3,4:
+  bupdate 2..4
+(4) to batch restart bundle which id are 2,3,4:
+  brestart 2..4
+  So, what is batch restart means? It means: stop the bundle, update it, and then start it.
+5. ECL script.
+  Sometimes, we need to load a lot predefine ECL commands and then execute them, in such situation, you need to prepare the script file in Equinox_Home/data/ecl, for example, in Linux:
+	$ pwd
+	/home/jiangyb/eclipse_equinox_3.4.0/data/ecl
+	$ cat Sspring
+	start 3..6;
+	start 7..40;
+	start 42;
+	start 44..54;
+	start 7;
+ 
+in Equinox Console, type the following command:
+  osgi>ecl Kspring
+Then ECL interpreter will load the Sspring file and execute the commands.  
+
+6. ECL syntax. The ECL is described by ANTLR:
+
+prog	:	line*
+	;
+
+line	:	actionStmt ';' NEWLINE*
+	|	installStmt ';' NEWLINE*
+	|	';' NEWLINE*
+	;
+
+actionStmt	:	actionName idSet
+	;
+
+actionName	:	'update' | 'start' | 'stop' | 'restart'
+		;
+
+installStmt	:	'install ' jarSet
+	;
+
+idSet	:	arrayIdSet
+	|	rangeIdSet
+	;
+
+arrayIdSet	:	DIGIT(',' DIGIT)*
+	;
+
+rangeIdSet	:	DIGIT '.' '.' DIGIT
+	;
+
+jarSet	:	jar(',')jar
+	;
+
+jar	:	(ALPHA | DIGIT | '.' | '_' | '-')+
+	;
+
+DIGIT	:	('0'..'9')+
+	;
+
+ALPHA	:	'a'..'z' | 'A'..'Z'
+	;
+
+NEWLINE	:	'\r'?'\n'
+	;
+
+WS	:	(' ' | '\t' | '\r' | '\n')+{skip();}
+	;
+
+7. Licence.
+  Apache Licence 2.0
+8. Author information.
+  Name: JiangYubao
+  MSN: jiangyubao@gmail.com
+  Address: Chongwen Zone Beijing China

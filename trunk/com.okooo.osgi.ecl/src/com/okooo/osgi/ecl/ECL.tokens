@@ -1,0 +1,14 @@
+WS=7
+NEWLINE=4
+DIGIT=5
+ALPHA=6
+'update'=9
+';'=8
+'start'=10
+'install '=13
+'-'=17
+'_'=16
+','=14
+'.'=15
+'stop'=11
+'restart'=12
