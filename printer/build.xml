@@ -1,0 +1,13 @@
+<project name="printer" default="all" basedir=".">
+	<property name="ICE_HOME" value="E:\Ice-3.3.0-VC90" />
+	<taskdef name="slice2java" classpath="${ICE_HOME}\lib\ant-ice.jar" classname="Slice2JavaTask" />
+	<target name="all">
+		<delete dir="src">
+			<include name="Demo/*.java" />
+			<include name="*depend" />
+		</delete>
+		<slice2java outputdir="src">
+			<fileset dir="." includes="Printer.ice" />
+		</slice2java>
+	</target>
+</project>
