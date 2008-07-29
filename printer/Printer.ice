@@ -3,5 +3,3 @@ module Demo {
 		void printString(string s);
 	};
 };
-
-#endif
